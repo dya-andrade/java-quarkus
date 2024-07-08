@@ -28,6 +28,15 @@ public class UserController {
         return Response.ok(user).build();
     }
 
+    @PUT
+    @Path("/{id}")
+    @Transactional
+    public Response updateUser(@PathParam("id") UUID userId, UserEntity userEntity) {
+        var user = userService.updateUser(userId, userEntity);
+
+        return Response.ok(user).build();
+    }
+
     @GET
     public Response findAll(@QueryParam("page") @DefaultValue("0") Integer page,
                             @QueryParam("size") @DefaultValue("10") Integer size) {
@@ -38,9 +47,18 @@ public class UserController {
 
     @GET
     @Path("/{id}")
-    public Response findById(@PathParam("id") UUID id) {
-        var user = userService.findById(id);
+    public Response findById(@PathParam("id") UUID userId) {
+        var user = userService.findById(userId);
 
         return Response.ok(user).build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @Transactional
+    public Response deleteById(@PathParam("id") UUID userId) {
+        userService.deleteById(userId);
+
+        return Response.noContent().build();
     }
 }

@@ -21,8 +21,23 @@ public class UserService {
                 .list();
     }
 
-    public UserEntity findById(UUID id) {
-        return (UserEntity) UserEntity.findByIdOptional(id)
+    public UserEntity findById(UUID userId) {
+        return (UserEntity) UserEntity.findByIdOptional(userId)
                 .orElseThrow(UserNotFoundException::new);
+    }
+
+    public UserEntity updateUser(UUID userId, UserEntity userEntity) {
+        var user = findById(userId);
+
+        user.username = userEntity.username;
+        UserEntity.persist(user);
+
+        return user;
+    }
+
+    public void deleteById(UUID userId) {
+        var user = findById(userId);
+
+        UserEntity.deleteById(user.userId);
     }
 }
